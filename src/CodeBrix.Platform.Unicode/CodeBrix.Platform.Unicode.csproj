@@ -1,0 +1,57 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>CodeBrix.Platform.Unicode</AssemblyName>
+    <RootNamespace>CodeBrix.Platform.Unicode</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeContentInPack>true</IncludeContentInPack>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>CodeBrix.Platform.Unicode.ApacheLicenseForever</PackageId>
+    <Version>1.0.118</Version>
+    <Product>CodeBrix.Platform.Unicode</Product>
+    <Title>CodeBrix.Platform.Unicode</Title>
+    <Authors>Jeremy Ellis</Authors>
+    <Description>A .NET 10 redistribution of the International Components for Unicode (ICU) version 77 native binaries for Windows, packaged for the CodeBrix family. Ships icuuc77.dll + icudt77.dll for win-x64 and win-arm64, the full ICU 77 data archive (icudt.dat, ~5.5 MB), and a buildTransitive .targets pair that auto-embeds the data archive as an EmbeddedResource at consumer-build time.</Description>
+    <PackageLicenseExpression>Apache-2.0 AND Unicode-3.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/ellisnet/CodeBrix.Platform.Unicode</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ellisnet/CodeBrix.Platform.Unicode</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageIcon>icon-codebrix-128.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Copyright>Copyright (c) 2026 Jeremy Ellis and contributors. ICU 77 binaries (c) 2016-2025 Unicode, Inc., distributed under the Unicode License Version 3.</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <IsPackable>true</IsPackable>
+    <PackageTags>ICU;Unicode;CLDR;collation;normalization;BiDi;Platform;Windows;native;CodeBrix</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\icon-codebrix-128.png"     Pack="true" PackagePath="" />
+    <None Include="..\..\README.md"                  Pack="true" PackagePath="" />
+    <None Include="..\..\AGENT-README.txt"           Pack="true" PackagePath="" />
+    <None Include="..\..\THIRD-PARTY-NOTICES.txt"    Pack="true" PackagePath="" />
+    <None Include="..\..\UNICODE-LICENSE.txt"        Pack="true" PackagePath="" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="buildTransitive\**\*"
+          Pack="true"
+          PackagePath="buildTransitive/" />
+    <None Include="runtimes\win-x64\native\icuuc77.dll"
+          Pack="true"
+          PackagePath="runtimes/win-x64/native/icuuc77.dll" />
+    <None Include="runtimes\win-x64\native\icudt77.dll"
+          Pack="true"
+          PackagePath="runtimes/win-x64/native/icudt77.dll" />
+    <None Include="runtimes\win-arm64\native\icuuc77.dll"
+          Pack="true"
+          PackagePath="runtimes/win-arm64/native/icuuc77.dll" />
+    <None Include="runtimes\win-arm64\native\icudt77.dll"
+          Pack="true"
+          PackagePath="runtimes/win-arm64/native/icudt77.dll" />
+  </ItemGroup>
+
+</Project>

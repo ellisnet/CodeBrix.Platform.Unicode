@@ -1,0 +1,147 @@
+THIRD-PARTY SOFTWARE NOTICES AND INFORMATION
+
+CodeBrix.Platform.Unicode is a CodeBrix-family redistribution of the
+International Components for Unicode (ICU) 77 Windows native binaries,
+packaged as a .NET 10 NuGet library. The package incorporates third-party
+material from two distinct sources:
+
+  1. Uno.icu-win 77.1.2 (Apache-2.0) — the original packaging shape,
+     `.targets` MSBuild logic for embedding the ICU data archive, and the
+     specific bundling of pre-built ICU 77 binaries for win-x64 + win-arm64.
+     Upstream copyright: Copyright (C) 2015-2025 Uno Platform Inc.
+  2. ICU 77 (Unicode-3.0) — the actual native DLLs (`icuuc77.dll`,
+     `icudt77.dll`) and the data archive (`icudt.dat`), built from the
+     upstream ICU project at https://github.com/unicode-org/icu.
+     Upstream copyright: Copyright (c) 2016-2025 Unicode, Inc.
+
+Each is reproduced under the terms of its own license. The full Unicode
+License Version 3 (the license that governs the bundled ICU binaries) is
+shipped with this repository as `UNICODE-LICENSE.txt` at the root and is
+also packaged inside the produced NuGet under the same name.
+
+================================================================================
+
+1. Uno.icu-win 77.1.2
+   ------------------
+   Project URL:    https://github.com/unoplatform/uno.icu
+   NuGet:          https://www.nuget.org/packages/Uno.icu-win/77.1.2
+   Copyright:      Copyright (C) 2015-2025 Uno Platform Inc. - all rights reserved
+   License:        Apache License, Version 2.0
+                   (NuGet metadata for upstream Uno.icu-win 77.1.2 omitted
+                    the explicit `<license>` element, but the upstream GitHub
+                    repository LICENSE.md is unambiguously Apache-2.0; this
+                    port relies on the repo LICENSE for licensing intent.)
+
+   Files derived from this upstream project (and adapted for CodeBrix
+   family conventions and the .NET 10 target):
+
+     - src/CodeBrix.Platform.Unicode/CodeBrix.Platform.Unicode.csproj
+         (csproj written from scratch following CodeBrix conventions, but
+          packaging the same `runtimes/<rid>/native/` + `buildTransitive/`
+          layout as upstream; was previously
+          nuget/uno.icu-win/uno.icu-win.nuspec)
+     - src/CodeBrix.Platform.Unicode/buildTransitive/CodeBrix.Platform.Unicode.ApacheLicenseForever.targets
+         (auto-imported MSBuild .targets, on-disk filename matches the
+          NuGet PackageId so consumer auto-import works correctly per
+          NuGet convention NU5129; was previously
+          nuget/uno.icu-win/buildTransitive/Uno.icu-win.targets)
+     - src/CodeBrix.Platform.Unicode/buildTransitive/CodeBrix.Platform.Unicode.Common.targets
+         (Common.targets imported by the auto-imported .targets above;
+          was previously nuget/Uno.icu.Common.targets)
+
+   Modifications made during port:
+     - The MSBuild target name `AddUnoIcuEmbeddedResource` was renamed to
+       `AddCodeBrixPlatformUnicodeEmbeddedResource` in the Common.targets
+       file. Target names are file-scoped in MSBuild, so this rename is a
+       non-breaking change relative to the cross-package guard.
+     - The MSBuild PROPERTY names `$(IsUnoHead)` and `$(UnoIcuDataIncluded)`
+       are preserved VERBATIM from upstream Uno.icu-win on purpose: a
+       consumer that transitively references both `Uno.icu-win` and
+       `CodeBrix.Platform.Unicode` at the same time should still embed
+       `icudt.dat` exactly once, not twice. Sharing the
+       `$(UnoIcuDataIncluded)` sentinel is what makes that work.
+     - csproj packaging metadata (PackageId, Description, Title, Authors,
+       PackageProjectUrl, RepositoryUrl, PackageIcon, etc.) all rewritten
+       for the CodeBrix.Platform.Unicode product.
+     - csproj license expression broadened from `Apache-2.0` (which is
+       what upstream Uno.icu's repo LICENSE.md establishes) to
+       `Apache-2.0 AND Unicode-3.0` so the Unicode License of the bundled
+       ICU 77 native binaries is accurately recorded at the package level.
+       Upstream Uno.icu-win 77.1.2's nuspec did not declare any license
+       expression at all; this port corrects that by both declaring the
+       expression and shipping `UNICODE-LICENSE.txt` to satisfy ICU's
+       own Unicode-3.0 redistribution conditions.
+     - Standard CodeBrix-family scaffolding added (8 AI-pointer files,
+       AGENT-README.txt, README.md, .slnx, InternalsVisibleTo.cs, plus
+       a metadata-only managed assembly emitted under net10.0).
+
+   The full Apache License Version 2.0 text is reproduced in the LICENSE
+   file at the root of this repository.
+
+================================================================================
+
+2. ICU 77 (International Components for Unicode)
+   ----------------------------------------------
+   Project URL:    https://icu.unicode.org/
+   Source repo:    https://github.com/unicode-org/icu (branch maint/maint-77)
+   Copyright:      Copyright (c) 2016-2025 Unicode, Inc.
+                   (additional bundled-component copyrights enumerated in
+                    UNICODE-LICENSE.txt)
+   License:        Unicode License Version 3 (SPDX: Unicode-3.0)
+
+   Files redistributed from this upstream project (binary, bit-for-bit
+   identical to the copies that Uno.icu-win 77.1.2 shipped):
+
+     - src/CodeBrix.Platform.Unicode/runtimes/win-x64/native/icuuc77.dll
+         (ICU 77 "common" native library — character properties,
+          collation, normalization, BiDi, etc. — for Windows x64;
+          PE32+ x86-64 DLL, ~2.57 MB)
+     - src/CodeBrix.Platform.Unicode/runtimes/win-x64/native/icudt77.dll
+         (ICU 77 data shim DLL for Windows x64, ~15 KB)
+     - src/CodeBrix.Platform.Unicode/runtimes/win-arm64/native/icuuc77.dll
+         (ICU 77 "common" native library for Windows ARM64;
+          PE32+ ARM64 DLL, ~2.41 MB)
+     - src/CodeBrix.Platform.Unicode/runtimes/win-arm64/native/icudt77.dll
+         (ICU 77 data shim DLL for Windows ARM64, ~15 KB)
+     - src/CodeBrix.Platform.Unicode/buildTransitive/icudt.dat
+         (ICU 77 data archive — the full Unicode/CLDR/timezone data
+          tables — ~5.51 MB; embedded as an MSBuild EmbeddedResource
+          into Uno-head consumers via the `.targets` files in the same
+          folder)
+
+   No modifications were made to any binary file. The DLLs and the data
+   archive are preserved bit-for-bit.
+
+   The full Unicode License Version 3 text is reproduced in
+   `UNICODE-LICENSE.txt` at the root of this repository, and is also
+   packaged inside the produced NuGet under the same name.
+
+================================================================================
+
+License compatibility statement
+-------------------------------
+
+The combined work is published under SPDX expression
+`Apache-2.0 AND Unicode-3.0`. The Unicode License Version 3 is a permissive
+license that explicitly allows the licensed software, data files, and
+documentation to be used, copied, modified, distributed, and sold subject
+to attribution and notice-preservation conditions; it is fully compatible
+with bundling under Apache-2.0 in a combined work. The native binaries and
+data archive remain under Unicode-3.0; only the wrapper packaging,
+`.targets` MSBuild logic, and CodeBrix-authored scaffolding are under
+Apache-2.0.
+
+Jeremy Ellis and contributors license the CodeBrix.Platform.Unicode
+project to you under the terms set forth in the LICENSE file (Apache-2.0)
+combined with the UNICODE-LICENSE.txt file (Unicode-3.0) for the bundled
+ICU 77 native binaries and data archive, both of which are located at the
+root of this repository.
+
+If you have any questions about any third-party code or assets referenced
+here, or if you believe that any third-party material has been included
+in CodeBrix.Platform.Unicode in error, please open a new issue at:
+https://github.com/ellisnet/CodeBrix.Platform.Unicode/issues
+
+================================================================================
+
+END OF THIRD-PARTY SOFTWARE NOTICES AND INFORMATION

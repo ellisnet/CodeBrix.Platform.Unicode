@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- was previously: nuget/Uno.icu.Common.targets -->
+<!--
+    Embeds icudt.dat as an EmbeddedResource at consumer build time, when the
+    consumer project is an Uno head and the data has not already been included
+    by another package in the same build.
+
+    The $(IsUnoHead) and $(UnoIcuDataIncluded) MSBuild property names are kept
+    verbatim from the upstream Uno.icu-win package on purpose: a consumer that
+    transitively references both Uno.icu-win and CodeBrix.Platform.Unicode at
+    the same time should still embed icudt.dat exactly once, not twice. Sharing
+    the $(UnoIcuDataIncluded) sentinel is what makes that work.
+
+    The TARGET name has been renamed from `AddUnoIcuEmbeddedResource` to
+    `AddCodeBrixPlatformUnicodeEmbeddedResource` (target names are file-scoped,
+    so renaming is a non-breaking change relative to the cross-package guard).
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <Target Name="AddCodeBrixPlatformUnicodeEmbeddedResource"
+            BeforeTargets="BeforeBuild;BeforeCompile"
+            Condition="'$(IsUnoHead)' == 'True' and '$(UnoIcuDataIncluded)' != 'true'">
+        <ItemGroup>
+            <EmbeddedResource Include="$(MSBuildThisFileDirectory)icudt.dat" />
+        </ItemGroup>
+        <PropertyGroup>
+            <UnoIcuDataIncluded>true</UnoIcuDataIncluded>
+        </PropertyGroup>
+    </Target>
+
+</Project>

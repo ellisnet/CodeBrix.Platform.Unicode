@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- was previously: nuget/uno.icu-win/buildTransitive/Uno.icu-win.targets -->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <Import Project="$(MSBuildThisFileDirectory)CodeBrix.Platform.Unicode.Common.targets" />
+
+</Project>
