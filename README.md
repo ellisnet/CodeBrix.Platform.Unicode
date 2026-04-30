@@ -27,7 +27,7 @@ For Uno-fork apps that previously used `Uno.icu-win`, the migration is a NuGet-r
 
 ### Migrating from Uno.icu-win
 
-Replace the `<PackageReference Include="Uno.icu-win" Version="77.1.2" />` line in your csproj with `<PackageReference Include="CodeBrix.Platform.Unicode.ApacheLicenseForever" Version="1.0.117" />`. The MSBuild property names `$(IsUnoHead)` and `$(UnoIcuDataIncluded)` are preserved verbatim from upstream so the embedded-resource trigger fires identically.
+Replace the `<PackageReference Include="Uno.icu-win" Version="77.1.2" />` line in your csproj with `<PackageReference Include="CodeBrix.Platform.Unicode.ApacheLicenseForever" Version="{current version}" />`. The MSBuild property names `$(IsUnoHead)` and `$(UnoIcuDataIncluded)` are preserved verbatim from upstream so the embedded-resource trigger fires identically.
 
 ## License
 
