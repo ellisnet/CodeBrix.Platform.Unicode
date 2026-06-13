@@ -14,10 +14,10 @@ NuGet packages, one per operating system:
 
   - CodeBrix.Platform.Unicode.ApacheLicenseForever
       Windows (win-x64 + win-arm64); namespace-renamed port of
-      `Uno.icu-win` 77.1.2.
+      `Uno.icu-win` 77.2.1.
   - CodeBrix.Platform.UnicodeMacOs.ApacheLicenseForever
       macOS (osx, universal x86_64 + arm64); namespace-renamed port of
-      `Uno.icu-macos` 77.1.2.
+      `Uno.icu-macos` 77.2.1.
 
 Both are intended as drop-in replacements for their upstream package in
 CodeBrix.Platform-forked Uno applications.
@@ -80,7 +80,7 @@ BUNDLED ASSET INVENTORY
 ========================================================================
 
 Native binaries (identical bytes vs the corresponding upstream
-Uno.icu-* 77.1.2 package):
+Uno.icu-* 77.2.1 package):
 
   Windows package — src/CodeBrix.Platform.Unicode/:
     Windows x64 (runtimes/win-x64/native/):
@@ -288,8 +288,8 @@ Each suite covers (for its own package):
 PROVENANCE
 ========================================================================
 
-Files derived from upstream Uno.icu-win 77.1.2 (Windows package) and
-Uno.icu-macos 77.1.2 (macOS package) carry a
+Files derived from upstream Uno.icu-win 77.2.1 (Windows package) and
+Uno.icu-macos 77.2.1 (macOS package) carry a
 `<!-- was previously: <upstream-path> -->` provenance comment in
 their file header (for the .targets files). Binary files (.dll, .dylib,
 .dat) cannot carry inline provenance, so the file-by-file provenance for
