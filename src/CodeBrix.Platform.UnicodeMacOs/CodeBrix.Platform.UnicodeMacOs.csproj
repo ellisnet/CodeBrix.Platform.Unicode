@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>CodeBrix.Platform.UnicodeMacOs</AssemblyName>
+    <RootNamespace>CodeBrix.Platform.UnicodeMacOs</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeContentInPack>true</IncludeContentInPack>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>CodeBrix.Platform.UnicodeMacOs.ApacheLicenseForever</PackageId>
+    <Version>1.0.118</Version>
+    <Product>CodeBrix.Platform.UnicodeMacOs</Product>
+    <Title>CodeBrix.Platform.UnicodeMacOs</Title>
+    <Authors>Jeremy Ellis</Authors>
+    <Description>A .NET 10 redistribution of the International Components for Unicode (ICU) version 77 native binaries for macOS, packaged for the CodeBrix family. Ships universal (x86_64 + arm64) libicuuc.dylib + libicudata.dylib for the osx runtime identifier, the full ICU 77 data archive (icudt.dat, ~5.5 MB), and a buildTransitive .targets pair that auto-embeds the data archive as an EmbeddedResource at consumer-build time.</Description>
+    <PackageLicenseExpression>Apache-2.0 AND Unicode-3.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/ellisnet/CodeBrix.Platform.Unicode</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ellisnet/CodeBrix.Platform.Unicode</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageIcon>icon-codebrix-128.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Copyright>Copyright (c) 2026 Jeremy Ellis and contributors. ICU 77 binaries (c) 2016-2025 Unicode, Inc., distributed under the Unicode License Version 3.</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <IsPackable>true</IsPackable>
+    <PackageTags>ICU;Unicode;CLDR;collation;normalization;BiDi;Platform;macOS;osx;native;CodeBrix</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\icon-codebrix-128.png"     Pack="true" PackagePath="" />
+    <None Include="..\..\README.md"                  Pack="true" PackagePath="" />
+    <None Include="..\..\AGENT-README.txt"           Pack="true" PackagePath="" />
+    <None Include="..\..\THIRD-PARTY-NOTICES.txt"    Pack="true" PackagePath="" />
+    <None Include="..\..\UNICODE-LICENSE.txt"        Pack="true" PackagePath="" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="buildTransitive\**\*"
+          Pack="true"
+          PackagePath="buildTransitive/" />
+    <None Include="runtimes\osx\native\libicuuc.dylib"
+          Pack="true"
+          PackagePath="runtimes/osx/native/libicuuc.dylib" />
+    <None Include="runtimes\osx\native\libicudata.dylib"
+          Pack="true"
+          PackagePath="runtimes/osx/native/libicudata.dylib" />
+  </ItemGroup>
+
+</Project>

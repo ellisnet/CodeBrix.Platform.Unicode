@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- was previously: buildTransitive/Uno.icu-macos.targets (from the Uno.icu-macos 77.1.2 NuGet package) -->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <Import Project="$(MSBuildThisFileDirectory)CodeBrix.Platform.UnicodeMacOs.Common.targets" />
+
+</Project>

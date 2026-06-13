@@ -9,6 +9,8 @@
   </Folder>
   <Folder Name="/Tests/">
     <Project Path="tests/CodeBrix.Platform.Unicode.Tests/CodeBrix.Platform.Unicode.Tests.csproj" />
+    <Project Path="tests/CodeBrix.Platform.UnicodeMacOs.Tests/CodeBrix.Platform.UnicodeMacOs.Tests.csproj" />
   </Folder>
   <Project Path="src/CodeBrix.Platform.Unicode/CodeBrix.Platform.Unicode.csproj" />
+  <Project Path="src/CodeBrix.Platform.UnicodeMacOs/CodeBrix.Platform.UnicodeMacOs.csproj" />
 </Solution>

@@ -1,17 +1,22 @@
 THIRD-PARTY SOFTWARE NOTICES AND INFORMATION
 
 CodeBrix.Platform.Unicode is a CodeBrix-family redistribution of the
-International Components for Unicode (ICU) 77 Windows native binaries,
-packaged as a .NET 10 NuGet library. The package incorporates third-party
-material from two distinct sources:
+International Components for Unicode (ICU) 77 native binaries for Windows
+and macOS, packaged as two .NET 10 NuGet libraries from this one
+repository (CodeBrix.Platform.Unicode.ApacheLicenseForever for Windows;
+CodeBrix.Platform.UnicodeMacOs.ApacheLicenseForever for macOS). The
+packages incorporate third-party material from two distinct sources:
 
-  1. Uno.icu-win 77.1.2 (Apache-2.0) — the original packaging shape,
-     `.targets` MSBuild logic for embedding the ICU data archive, and the
-     specific bundling of pre-built ICU 77 binaries for win-x64 + win-arm64.
-     Upstream copyright: Copyright (C) 2015-2025 Uno Platform Inc.
-  2. ICU 77 (Unicode-3.0) — the actual native DLLs (`icuuc77.dll`,
-     `icudt77.dll`) and the data archive (`icudt.dat`), built from the
-     upstream ICU project at https://github.com/unicode-org/icu.
+  1. Uno.icu-win 77.1.2 and Uno.icu-macos 77.1.2 (Apache-2.0) — the
+     original packaging shape, `.targets` MSBuild logic for embedding the
+     ICU data archive, and the specific bundling of pre-built ICU 77
+     binaries for win-x64 + win-arm64 (icu-win) and universal macOS
+     (icu-macos). Upstream copyright: Copyright (C) 2015-2025
+     Uno Platform Inc.
+  2. ICU 77 (Unicode-3.0) — the actual native binaries (`icuuc77.dll`,
+     `icudt77.dll`, `libicuuc.dylib`, `libicudata.dylib`) and the data
+     archive (`icudt.dat`), built from the upstream ICU project at
+     https://github.com/unicode-org/icu.
      Upstream copyright: Copyright (c) 2016-2025 Unicode, Inc.
 
 Each is reproduced under the terms of its own license. The full Unicode
@@ -21,18 +26,19 @@ also packaged inside the produced NuGet under the same name.
 
 ================================================================================
 
-1. Uno.icu-win 77.1.2
-   ------------------
+1. Uno.icu-win 77.1.2 and Uno.icu-macos 77.1.2
+   --------------------------------------------
    Project URL:    https://github.com/unoplatform/uno.icu
    NuGet:          https://www.nuget.org/packages/Uno.icu-win/77.1.2
+                   https://www.nuget.org/packages/Uno.icu-macos/77.1.2
    Copyright:      Copyright (C) 2015-2025 Uno Platform Inc. - all rights reserved
    License:        Apache License, Version 2.0
-                   (NuGet metadata for upstream Uno.icu-win 77.1.2 omitted
+                   (NuGet metadata for the upstream 77.1.2 packages omitted
                     the explicit `<license>` element, but the upstream GitHub
                     repository LICENSE.md is unambiguously Apache-2.0; this
                     port relies on the repo LICENSE for licensing intent.)
 
-   Files derived from this upstream project (and adapted for CodeBrix
+   Files derived from these upstream packages (and adapted for CodeBrix
    family conventions and the .NET 10 target):
 
      - src/CodeBrix.Platform.Unicode/CodeBrix.Platform.Unicode.csproj
@@ -48,12 +54,29 @@ also packaged inside the produced NuGet under the same name.
      - src/CodeBrix.Platform.Unicode/buildTransitive/CodeBrix.Platform.Unicode.Common.targets
          (Common.targets imported by the auto-imported .targets above;
           was previously nuget/Uno.icu.Common.targets)
+     - src/CodeBrix.Platform.UnicodeMacOs/CodeBrix.Platform.UnicodeMacOs.csproj
+         (csproj written from scratch following CodeBrix conventions, but
+          packaging the same `runtimes/osx/native/` + `buildTransitive/`
+          layout as upstream; was previously
+          the Uno.icu-macos 77.1.2 nuspec)
+     - src/CodeBrix.Platform.UnicodeMacOs/buildTransitive/CodeBrix.Platform.UnicodeMacOs.ApacheLicenseForever.targets
+         (auto-imported MSBuild .targets, on-disk filename matches the
+          NuGet PackageId so consumer auto-import works correctly;
+          was previously buildTransitive/Uno.icu-macos.targets)
+     - src/CodeBrix.Platform.UnicodeMacOs/buildTransitive/CodeBrix.Platform.UnicodeMacOs.Common.targets
+         (Common.targets imported by the auto-imported .targets above;
+          was previously buildTransitive/Uno.icu.Common.targets as shipped
+          in the Uno.icu-macos 77.1.2 package)
 
    Modifications made during port:
      - The MSBuild target name `AddUnoIcuEmbeddedResource` was renamed to
-       `AddCodeBrixPlatformUnicodeEmbeddedResource` in the Common.targets
-       file. Target names are file-scoped in MSBuild, so this rename is a
-       non-breaking change relative to the cross-package guard.
+       `AddCodeBrixPlatformUnicodeEmbeddedResource` (Windows package) and
+       `AddCodeBrixPlatformUnicodeMacOsEmbeddedResource` (macOS package)
+       in the respective Common.targets files. Target names are
+       file-scoped in MSBuild, so these renames are non-breaking changes
+       relative to the cross-package guard, and the two CodeBrix names
+       are distinct from each other so a consumer importing both packages
+       gets no target redefinition.
      - The MSBuild PROPERTY names `$(IsUnoHead)` and `$(UnoIcuDataIncluded)`
        are preserved VERBATIM from upstream Uno.icu-win on purpose: a
        consumer that transitively references both `Uno.icu-win` and
@@ -90,7 +113,8 @@ also packaged inside the produced NuGet under the same name.
    License:        Unicode License Version 3 (SPDX: Unicode-3.0)
 
    Files redistributed from this upstream project (binary, bit-for-bit
-   identical to the copies that Uno.icu-win 77.1.2 shipped):
+   identical to the copies that Uno.icu-win 77.1.2 / Uno.icu-macos 77.1.2
+   shipped):
 
      - src/CodeBrix.Platform.Unicode/runtimes/win-x64/native/icuuc77.dll
          (ICU 77 "common" native library — character properties,
@@ -108,6 +132,18 @@ also packaged inside the produced NuGet under the same name.
           tables — ~5.51 MB; embedded as an MSBuild EmbeddedResource
           into Uno-head consumers via the `.targets` files in the same
           folder)
+     - src/CodeBrix.Platform.UnicodeMacOs/runtimes/osx/native/libicuuc.dylib
+         (ICU 77 "common" native library for macOS; Mach-O universal
+          binary, x86_64 + arm64, ~4.06 MB; bit-for-bit identical to the
+          copy shipped in Uno.icu-macos 77.1.2)
+     - src/CodeBrix.Platform.UnicodeMacOs/runtimes/osx/native/libicudata.dylib
+         (ICU 77 data shim library for macOS; Mach-O universal binary,
+          ~33 KB; bit-for-bit identical to the copy shipped in
+          Uno.icu-macos 77.1.2)
+     - src/CodeBrix.Platform.UnicodeMacOs/buildTransitive/icudt.dat
+         (second copy of the same ICU 77 data archive, byte-identical to
+          the Windows package's copy — verified by checksum during the
+          2026-06-12 port)
 
    No modifications were made to any binary file. The DLLs and the data
    archive are preserved bit-for-bit.

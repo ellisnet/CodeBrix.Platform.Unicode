@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- was previously: buildTransitive/Uno.icu.Common.targets (from the Uno.icu-macos 77.1.2 NuGet package) -->
+<!--
+    Embeds icudt.dat as an EmbeddedResource at consumer build time, when the
+    consumer project is an Uno head and the data has not already been included
+    by another package in the same build.
+
+    The $(IsUnoHead) and $(UnoIcuDataIncluded) MSBuild property names are kept
+    verbatim from the upstream Uno.icu-macos package on purpose: a consumer
+    that transitively references any combination of Uno.icu-*,
+    CodeBrix.Platform.Unicode, and CodeBrix.Platform.UnicodeMacOs in the same
+    build should still embed icudt.dat exactly once, not twice. Sharing the
+    $(UnoIcuDataIncluded) sentinel is what makes that work — including with
+    the sibling CodeBrix.Platform.Unicode (Windows) package from this repo.
+
+    The TARGET name has been renamed from `AddUnoIcuEmbeddedResource` to
+    `AddCodeBrixPlatformUnicodeMacOsEmbeddedResource` (target names are
+    file-scoped, so renaming is a non-breaking change relative to the
+    cross-package guard; it is also distinct from the sibling Windows
+    package's target name so a consumer importing both gets no
+    target-redefinition surprise).
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <Target Name="AddCodeBrixPlatformUnicodeMacOsEmbeddedResource"
+            BeforeTargets="BeforeBuild;BeforeCompile"
+            Condition="'$(IsUnoHead)' == 'True' and '$(UnoIcuDataIncluded)' != 'true'">
+        <ItemGroup>
+            <EmbeddedResource Include="$(MSBuildThisFileDirectory)icudt.dat" />
+        </ItemGroup>
+        <PropertyGroup>
+            <UnoIcuDataIncluded>true</UnoIcuDataIncluded>
+        </PropertyGroup>
+    </Target>
+
+</Project>
