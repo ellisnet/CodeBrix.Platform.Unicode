@@ -46,24 +46,24 @@ public class TargetsFileTests
     }
 
     [Fact]
-    public void Common_targets_preserves_isunohead_property_reference()
+    public void Common_targets_gates_on_iscodebrixhead()
     {
         //Arrange
         var content = File.ReadAllText(TestAssetPaths.CommonTargetsPath);
 
-        //Assert — verbatim from upstream so cross-package guard still works
-        content.Should().Contain("'$(IsUnoHead)' == 'True'");
+        //Assert — embedding is gated on a CodeBrix.Platform head
+        content.Should().Contain("'$(IsCodeBrixHead)' == 'true'");
     }
 
     [Fact]
-    public void Common_targets_preserves_unoicudataincluded_sentinel()
+    public void Common_targets_uses_codebrixicudataincluded_sentinel()
     {
         //Arrange
         var content = File.ReadAllText(TestAssetPaths.CommonTargetsPath);
 
-        //Assert — verbatim from upstream so a consumer with multiple icu packages still embeds icudt.dat exactly once
-        content.Should().Contain("'$(UnoIcuDataIncluded)' != 'true'");
-        content.Should().Contain("<UnoIcuDataIncluded>true</UnoIcuDataIncluded>");
+        //Assert — the shared sentinel ensures a consumer with multiple icu packages embeds icudt.dat exactly once
+        content.Should().Contain("'$(CodeBrixIcuDataIncluded)' != 'true'");
+        content.Should().Contain("<CodeBrixIcuDataIncluded>true</CodeBrixIcuDataIncluded>");
     }
 
     [Fact]
