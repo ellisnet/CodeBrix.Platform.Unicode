@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Embeds icudt.dat as an EmbeddedResource at consumer build time, when the
-    consumer project is a CodeBrix.Platform head ($(IsCodeBrixHead)) and the
-    data has not already been included by another package in the same build.
+    Delivers icudt.dat - the ICU data archive, without which everything that
+    needs a Unicode property table fails - to the consumer, by one of two
+    routes:
+
+      * a CodeBrix.Platform head ($(IsCodeBrixHead)) EMBEDS it as an
+        EmbeddedResource, and names its own assembly to the engine from a
+        generated module initializer;
+
+      * any other application-shaped consumer (a test project, a console tool,
+        an image pipeline - anything with an OutputType of Exe or WinExe that
+        is not a head) gets it COPIED beside the application instead, where the
+        engine looks for it when no assembly carries it.
+
+    The second route is what makes the host-free packages - TextLayout,
+    AdvancedTextEdit - usable outside an application. Windows and macOS have no
+    system ICU, so without one of these two routes the first line-breaking call
+    fails with U_MISSING_RESOURCE_ERROR.
+
+    Class libraries deliberately get NEITHER: whatever roots the build supplies
+    the archive once, rather than every library in the graph dropping its own
+    5.5 MB copy into the output folder.
 
     The $(CodeBrixIcuDataIncluded) sentinel is shared with the sibling
     CodeBrix.Platform.UnicodeMacOs package, so a consumer that references both
-    the Windows and macOS Unicode packages still embeds icudt.dat exactly once.
+    the Windows and macOS Unicode packages still includes icudt.dat exactly once.
 -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
@@ -15,6 +33,23 @@
             Condition="'$(IsCodeBrixHead)' == 'true' and '$(CodeBrixIcuDataIncluded)' != 'true'">
         <ItemGroup>
             <EmbeddedResource Include="$(MSBuildThisFileDirectory)icudt.dat" />
+        </ItemGroup>
+        <PropertyGroup>
+            <CodeBrixIcuDataIncluded>true</CodeBrixIcuDataIncluded>
+        </PropertyGroup>
+    </Target>
+
+    <!-- AssignTargetPaths, not BeforeBuild: a None item has to carry a target
+         path before GetCopyToOutputDirectoryItems reads it, or the copy is
+         silently skipped. -->
+    <Target Name="AddCodeBrixPlatformUnicodeDataFile"
+            BeforeTargets="AssignTargetPaths"
+            Condition="'$(IsCodeBrixHead)' != 'true' and '$(CodeBrixIcuDataIncluded)' != 'true' and ('$(OutputType)' == 'Exe' or '$(OutputType)' == 'WinExe')">
+        <ItemGroup>
+            <None Include="$(MSBuildThisFileDirectory)icudt.dat"
+                  Link="icudt.dat"
+                  CopyToOutputDirectory="PreserveNewest"
+                  Visible="false" />
         </ItemGroup>
         <PropertyGroup>
             <CodeBrixIcuDataIncluded>true</CodeBrixIcuDataIncluded>

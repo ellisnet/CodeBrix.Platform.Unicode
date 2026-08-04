@@ -54,7 +54,7 @@
     <Product>CodeBrix.Platform.UnicodeMacOs</Product>
     <Title>CodeBrix.Platform.UnicodeMacOs</Title>
     <Authors>Jeremy Ellis</Authors>
-    <Description>A .NET 10 redistribution of the International Components for Unicode (ICU) version 77 native binaries for macOS, packaged for the CodeBrix family. Ships universal (x86_64 + arm64) libicuuc.dylib + libicudata.dylib for the osx runtime identifier, the full ICU 77 data archive (icudt.dat, ~5.5 MB), and a buildTransitive .targets pair that auto-embeds the data archive as an EmbeddedResource at consumer-build time.</Description>
+    <Description>A .NET 10 redistribution of the International Components for Unicode (ICU) version 77 native binaries for macOS, packaged for the CodeBrix family. Ships universal (x86_64 + arm64) libicuuc.dylib + libicudata.dylib for the osx runtime identifier, the full ICU 77 data archive (icudt.dat, ~5.5 MB), and a buildTransitive .targets pair that delivers the data archive at consumer-build time - embedded as an EmbeddedResource into an application head, or copied beside the application for a host-free consumer such as a test project or a console tool.</Description>
     <PackageLicenseExpression>Apache-2.0 AND Unicode-3.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/ellisnet/CodeBrix.Platform.Unicode</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ellisnet/CodeBrix.Platform.Unicode</RepositoryUrl>
