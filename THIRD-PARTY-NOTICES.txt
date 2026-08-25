@@ -77,12 +77,13 @@ also packaged inside the produced NuGet under the same name.
        relative to the cross-package guard, and the two CodeBrix names
        are distinct from each other so a consumer importing both packages
        gets no target redefinition.
-     - The MSBuild PROPERTY names `$(IsUnoHead)` and `$(UnoIcuDataIncluded)`
-       are preserved VERBATIM from upstream Uno.icu-win on purpose: a
-       consumer that transitively references both `Uno.icu-win` and
-       `CodeBrix.Platform.Unicode` at the same time should still embed
-       `icudt.dat` exactly once, not twice. Sharing the
-       `$(UnoIcuDataIncluded)` sentinel is what makes that work.
+     - The MSBuild PROPERTY names were RENAMED from upstream Uno.icu-win:
+       `$(IsUnoHead)` -> `$(IsCodeBrixHead)` and `$(UnoIcuDataIncluded)` ->
+       `$(CodeBrixIcuDataIncluded)`. The two CodeBrix packages share the
+       `$(CodeBrixIcuDataIncluded)` sentinel, so a consumer that references
+       both still embeds `icudt.dat` exactly once; the sentinel is no longer
+       shared with the upstream `Uno.icu-*` packages. A second target per
+       package copies `icudt.dat` beside non-head Exe/WinExe outputs.
      - csproj packaging metadata (PackageId, Description, Title, Authors,
        PackageProjectUrl, RepositoryUrl, PackageIcon, etc.) all rewritten
        for the CodeBrix.Platform.Unicode product.

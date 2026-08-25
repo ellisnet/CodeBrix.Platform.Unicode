@@ -20,14 +20,14 @@ Please update your C#/.NET code and projects to the latest LTS version of Micros
 * The ICU 77 "common" native runtime DLL (`icuuc77.dll`) for Windows on x64 and ARM64 — same `.dll` that upstream `Uno.icu-win` 77.2.1 ships, byte-for-byte.
 * The ICU 77 data shim DLL (`icudt77.dll`) for both Windows architectures.
 * The full ICU 77 data archive (`icudt.dat`, ~5.5 MB) — covering Unicode collation, normalization, BiDi, character properties, locale (CLDR) data, time zones, transliteration, and the rest of ICU's runtime data.
-* A `buildTransitive` MSBuild `.targets` pair that automatically embeds `icudt.dat` as an `<EmbeddedResource>` at consumer-build time, when the consumer project is an Uno head (`$(IsUnoHead) == 'True'`) and the data has not yet been embedded by another package in the same build (`$(UnoIcuDataIncluded) != 'true'`).
+* A `buildTransitive` MSBuild `.targets` pair that automatically embeds `icudt.dat` as an `<EmbeddedResource>` at consumer-build time, when the consumer project is a CodeBrix.Platform head (`$(IsCodeBrixHead) == 'true'`) and the data has not yet been embedded by another package in the same build (`$(CodeBrixIcuDataIncluded) != 'true'`). A second target in the same `.targets` copies `icudt.dat` beside the output of non-head `Exe`/`WinExe` consumers (test projects, console tools); class libraries get neither route.
 
 ## CodeBrix.Platform.UnicodeMacOs supports:
 
 * The ICU 77 "common" native runtime library (`libicuuc.dylib`) for macOS as a universal binary (x86_64 + arm64, one file for Intel and Apple-silicon Macs) — same `.dylib` that upstream `Uno.icu-macos` 77.2.1 ships, byte-for-byte.
 * The ICU 77 data shim library (`libicudata.dylib`), also universal.
 * The same full ICU 77 data archive (`icudt.dat`) — byte-identical to the one in the Windows package.
-* The same auto-embedding `buildTransitive` MSBuild `.targets` mechanism, using the same `$(IsUnoHead)` / `$(UnoIcuDataIncluded)` properties — so a build that somehow sees both packages (or an upstream `Uno.icu-*` package) still embeds `icudt.dat` exactly once.
+* The same auto-embedding `buildTransitive` MSBuild `.targets` mechanism, using the same `$(IsCodeBrixHead)` / `$(CodeBrixIcuDataIncluded)` properties — so a build that somehow sees both packages (or an upstream `Uno.icu-*` package) still embeds `icudt.dat` exactly once.
 
 ## Sample Usage
 
@@ -45,11 +45,11 @@ For Uno-fork apps that previously used `Uno.icu-win` or `Uno.icu-macos`, the mig
 
 ### Migrating from Uno.icu-win
 
-Replace the `<PackageReference Include="Uno.icu-win" Version="77.2.1" />` line in your csproj with `<PackageReference Include="CodeBrix.Platform.Unicode.ApacheLicenseForever" Version="{current version}" />`. The MSBuild property names `$(IsUnoHead)` and `$(UnoIcuDataIncluded)` are preserved verbatim from upstream so the embedded-resource trigger fires identically.
+Replace the `<PackageReference Include="Uno.icu-win" Version="77.2.1" />` line in your csproj with `<PackageReference Include="CodeBrix.Platform.Unicode.ApacheLicenseForever" Version="{current version}" />`. The MSBuild property names are renamed from upstream (`IsUnoHead` -> `IsCodeBrixHead`, `UnoIcuDataIncluded` -> `CodeBrixIcuDataIncluded`); a CodeBrix.Platform head sets `IsCodeBrixHead`, so the embedded-resource trigger fires without any change to the consuming project.
 
 ### Migrating from Uno.icu-macos
 
-Replace the `<PackageReference Include="Uno.icu-macos" Version="77.2.1" />` line in your csproj with `<PackageReference Include="CodeBrix.Platform.UnicodeMacOs.ApacheLicenseForever" Version="{current version}" />`. The same upstream MSBuild property names are preserved verbatim.
+Replace the `<PackageReference Include="Uno.icu-macos" Version="77.2.1" />` line in your csproj with `<PackageReference Include="CodeBrix.Platform.UnicodeMacOs.ApacheLicenseForever" Version="{current version}" />`. The same renamed MSBuild property names apply.
 
 ## License
 
