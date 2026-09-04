@@ -54,7 +54,7 @@
     <Product>CodeBrix.Platform.Unicode</Product>
     <Title>CodeBrix.Platform.Unicode</Title>
     <Authors>Jeremy Ellis</Authors>
-    <Description>A .NET 10 redistribution of the International Components for Unicode (ICU) version 77 native binaries for Windows, packaged for the CodeBrix family. Ships icuuc77.dll + icudt77.dll for win-x64 and win-arm64, the full ICU 77 data archive (icudt.dat, ~5.5 MB), and a buildTransitive .targets pair that delivers the data archive at consumer-build time - embedded as an EmbeddedResource into an application head, or copied beside the application for a host-free consumer such as a test project or a console tool.</Description>
+    <Description>A .NET 10 redistribution of the International Components for Unicode (ICU) version 77 native binaries for Windows, packaged for the CodeBrix family. Ships icuuc77.dll + icudt77.dll for win-x64 and win-arm64, the full ICU 77 data archive (icudt.dat), and a buildTransitive .targets pair that delivers the data archive at consumer-build time - embedded as an EmbeddedResource into an application head, or copied beside the application for a host-free consumer such as a test project or a console tool.</Description>
     <PackageLicenseExpression>Apache-2.0 AND Unicode-3.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/ellisnet/CodeBrix.Platform.Unicode</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ellisnet/CodeBrix.Platform.Unicode</RepositoryUrl>

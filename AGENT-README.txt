@@ -30,8 +30,8 @@ Target framework: .NET 10 or later. There is no multi-targeting and there are
 no managed NuGet dependencies.
 
 Provenance: the packaging shape and the .targets logic derive from the upstream
-platform's ICU redistribution packages (77.2.1); the native binaries and the
-data archive are the unmodified ICU 77 builds those upstream packages carried.
+platform's ICU redistribution packages; the native binaries and the data archive
+are the unmodified ICU 77 builds those upstream packages carried.
 The CodeBrix packages are not framed as substitutes for anything upstream -
 they are the CodeBrix family's ICU carriers, with CodeBrix-named MSBuild
 properties and targets, and are what a CodeBrix.Platform application

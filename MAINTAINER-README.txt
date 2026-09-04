@@ -43,7 +43,14 @@ REPOSITORY LAYOUT
 
     CodeBrix.Platform.Unicode.slnx        solution (both src projects, a Tests
                                           folder with both test projects, and a
-                                          Solution Items folder)
+                                          Solution Items folder carrying
+                                          .gitignore, AGENT-README.txt,
+                                          EXTRAS-README.txt, global.json,
+                                          icon-codebrix-128.png, LICENSE,
+                                          MAINTAINER-README.txt,
+                                          README-INDEX.txt, README.md,
+                                          THIRD-PARTY-NOTICES.txt and
+                                          UNICODE-LICENSE.txt)
     icon-codebrix-128.png                 NuGet icon for both packages
     LICENSE                               Apache-2.0 (packaging, .targets,
                                           carrier assemblies)
@@ -56,6 +63,8 @@ REPOSITORY LAYOUT
     MAINTAINER-README.txt                 this file
     EXTRAS-README.txt                     non-package content
     README-INDEX.txt                      map of the README files
+    global.json                           selects the Microsoft.Testing.Platform
+                                          test runner; pins no SDK version
 
     src/CodeBrix.Platform.Unicode/
         CodeBrix.Platform.Unicode.csproj
@@ -114,8 +123,20 @@ TESTING
 
     dotnet test CodeBrix.Platform.Unicode.slnx
 
-Two suites, one per package, xUnit v3 with SilverAssertions. There are no
-opt-in environment variables and no special preparation.
+THE TEST RUNNER IS Microsoft.Testing.Platform, selected by global.json at the
+repository root. That file does NOT pin an SDK version, so the newest installed
+.NET 10 SDK is still used; it exists solely to select the runner:
+
+    { "test": { "runner": "Microsoft.Testing.Platform" } }
+
+Because the setting lives in global.json rather than in the test csprojs, it
+applies to every `dotnet test` run anywhere in the repository. Keep the file
+committed -- without it `dotnet test` silently falls back to the older VSTest
+bridge.
+
+Two suites, one per package, xUnit v3 with SilverAssertions, with no coverage
+collector in either. There are no opt-in environment variables and no special
+preparation.
 
 The suites do NOT load ICU or call into the native binaries. They are asset and
 contract tests: each test csproj copies its package's payload into a
