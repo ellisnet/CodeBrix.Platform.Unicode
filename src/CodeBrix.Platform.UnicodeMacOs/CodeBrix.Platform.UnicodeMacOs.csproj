@@ -54,14 +54,14 @@
     <Product>CodeBrix.Platform.UnicodeMacOs</Product>
     <Title>CodeBrix.Platform.UnicodeMacOs</Title>
     <Authors>Jeremy Ellis</Authors>
-    <Description>A .NET 10 redistribution of the International Components for Unicode (ICU) version 77 native binaries for macOS, packaged for the CodeBrix family. Ships universal (x86_64 + arm64) libicuuc.dylib + libicudata.dylib for the osx runtime identifier, the full ICU 77 data archive (icudt.dat), and a buildTransitive .targets pair that delivers the data archive at consumer-build time - embedded as an EmbeddedResource into an application head, or copied beside the application for a host-free consumer such as a test project or a console tool.</Description>
+    <Description>A ready-to-use redistribution of Unicode (ICU) version 77 for macOS, so your app gets correct, consistent text handling - sorting, case conversion, and more - across languages and scripts without installing anything separately. Supports both Intel and Apple Silicon Macs, and only adds its data file to your app when you actually need it.</Description>
     <PackageLicenseExpression>Apache-2.0 AND Unicode-3.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/ellisnet/CodeBrix.Platform.Unicode</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ellisnet/CodeBrix.Platform.Unicode</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageIcon>icon-codebrix-128.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <Copyright>Copyright (c) 2026 Jeremy Ellis and contributors. ICU 77 binaries (c) 2016-2025 Unicode, Inc., distributed under the Unicode License Version 3.</Copyright>
+    <Copyright>Copyright (c) 2026 Jeremy Ellis and contributors</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <IsPackable>true</IsPackable>
