@@ -97,9 +97,21 @@ By target OS - the two packages are per-OS, not alternatives:
                                                    ICU (see below)
     Android / iOS / browser-wasm                 neither - not shipped
 
+A CodeBrix.Platform head needs no reference of its own: the Windows head
+packages (CodeBrix.Platform.Runtime.Skia.Win32.ApacheLicenseForever and
+CodeBrix.Platform.Runtime.Skia.Wpf.ApacheLicenseForever) depend on
+CodeBrix.Platform.Unicode.ApacheLicenseForever, and the macOS head package
+(CodeBrix.Platform.Runtime.Skia.MacOS.ApacheLicenseForever) depends on
+CodeBrix.Platform.UnicodeMacOs.ApacheLicenseForever. The head receives the
+package transitively and, because the .targets sit in buildTransitive/, route 1
+still fires in the head. A direct reference in a head is harmless (the shared
+sentinel delivers icudt.dat once); it is only needed to pin a different package
+version. The table above matters most for console tools and test projects,
+which reference no head package.
+
 A multi-head solution (a Windows head and a macOS head in the same solution):
-reference the Windows package from the Windows head project and the macOS
-package from the macOS head project. Referencing BOTH from one project is also
+each head already receives its OS's package through its head package. A
+project that references the packages directly may reference BOTH; that is also
 safe and is explicitly supported: the two packages share one
 $(CodeBrixIcuDataIncluded) sentinel so icudt.dat is delivered exactly once, and
 their MSBuild target names are deliberately distinct
@@ -356,7 +368,9 @@ COMPLETE EXAMPLES
     <PackageReference
         Include="CodeBrix.Platform.Unicode.ApacheLicenseForever" />
 
-    That is the whole integration. $(IsCodeBrixHead) is already 'true' in a
+    A head that references a Windows head package already receives this
+    reference transitively (see WHICH PACKAGE DO I REFERENCE); writing it
+    directly is optional. That is the whole integration. $(IsCodeBrixHead) is already 'true' in a
     CodeBrix.Platform head, so AddCodeBrixPlatformUnicodeEmbeddedResource
     fires during BeforeBuild/BeforeCompile and icudt.dat is embedded in the
     head assembly. No code changes, no runtime configuration, no using
@@ -369,6 +383,8 @@ COMPLETE EXAMPLES
         Include="CodeBrix.Platform.UnicodeMacOs.ApacheLicenseForever" />
 
     Identical mechanism via AddCodeBrixPlatformUnicodeMacOsEmbeddedResource.
+    As on Windows, the macOS head package already carries this reference
+    transitively.
 
 3. One project that must build for both desktop OSes
 ----------------------------------------------------
@@ -416,9 +432,10 @@ COMPLETE EXAMPLES
 MINIMUM VIABLE PROJECT
 ======================
 
-Route 1 - head app (nothing but the reference):
+Route 1 - head app (nothing but the reference; a head that references a
+Windows head package already has it transitively):
 
-    <!-- MyApp.Windows.csproj (a CodeBrix.Platform head) -->
+    <!-- MyApp.Win32Skia.csproj (a CodeBrix.Platform head) -->
     <Project Sdk="Microsoft.NET.Sdk">
       <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
@@ -431,7 +448,7 @@ Route 1 - head app (nothing but the reference):
       </ItemGroup>
     </Project>
 
-    Result: icudt.dat embedded in MyApp.Windows.dll; icuuc77.dll and
+    Result: icudt.dat embedded in MyApp.Win32Skia.dll; icuuc77.dll and
     icudt77.dll copied to the output from runtimes/win-x64/native/ because the
     RID resolves.
 

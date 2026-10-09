@@ -27,7 +27,7 @@ dotnet add package CodeBrix.Platform.Unicode.ApacheLicenseForever
 dotnet add package CodeBrix.Platform.UnicodeMacOs.ApacheLicenseForever
 ```
 
-**Which one do I reference?** One per target OS: reference the Windows package from a project that runs on Windows, the macOS package from a project that runs on macOS, and both from a solution that ships both. Referencing both in the same build is safe — the two packages share a sentinel property, so the ICU data archive is still delivered exactly once.
+**Which one do I reference?** One per target OS: reference the Windows package from a project that runs on Windows, the macOS package from a project that runs on macOS, and both from a solution that ships both. A CodeBrix.Platform head needs no reference of its own: the Windows and macOS head packages already bring their OS's package transitively. Referencing both in the same build is safe — the two packages share a sentinel property, so the ICU data archive is still delivered exactly once.
 
 Note that the NuGet package IDs and the assembly names are different — there is no package named plain `CodeBrix.Platform.Unicode`:
 
